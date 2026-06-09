@@ -1,5 +1,6 @@
 package luna_ciega.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,9 +12,14 @@ public class Usuario {
     private Long idUsuario;
 
     private String nombre;
+
     private String apellido;
+
     private String telefono;
+
     private String correo;
+
+    @JsonIgnore
     private String contrasena;
 
     private String rol; // CLIENTE, EMPLEADO, ADMIN

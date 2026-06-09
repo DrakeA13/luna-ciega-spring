@@ -12,15 +12,18 @@ public class Cita {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cita")
     private Long idCita;
 
-    private LocalDateTime fechaHora;
+    @Column(name = "fecha_hora_inicio")
+    private LocalDateTime fechaHoraInicio;
 
-    private String estado; // PENDIENTE, CONFIRMADA, CANCELADA
+    @Column(name = "fecha_hora_fin")
+    private LocalDateTime fechaHoraFin;
+
+    private String estado;
 
     private String notas;
-
-    // RELACIONES
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -29,4 +32,5 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "id_servicio")
     private Servicio servicio;
+
 }
