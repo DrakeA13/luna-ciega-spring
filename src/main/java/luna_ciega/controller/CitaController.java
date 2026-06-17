@@ -27,4 +27,21 @@ public class CitaController {
     ) {
         return service.crearCita(req);
     }
+
+    @DeleteMapping(
+            "/{id}"
+    )
+
+    public void eliminar(
+
+            @PathVariable
+            Long id
+
+    ){
+
+        service.cancelar(
+                id
+        );
+
+    }
 }

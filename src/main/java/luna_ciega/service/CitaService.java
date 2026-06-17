@@ -83,4 +83,14 @@ public class CitaService {
         return repo.save(cita);
     }
 
+    public void cancelar(
+            Long id
+    ){
+
+        repo.deleteById(
+                id
+        );
+
+    }
+
 }

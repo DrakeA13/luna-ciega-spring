@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Agendar cita</title>
+
+    <style>
+
+        body{
+        background:#111;
+        color:white;
+        font-family:Arial;
+        padding:40px;
+        }
+
+        h1{
+        text-align:center;
+        margin-bottom:40px;
+        }
+
+        form{
+
+        max-width:600px;
+
+        margin:auto;
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:20px;
+
+        }
+
+        input{
+
+        padding:18px;
+
+        border:none;
+
+        border-radius:15px;
+
+        font-size:18px;
+
+        }
+
+        button{
+
+        padding:18px;
+
+        background:gold;
+
+        border:none;
+
+        border-radius:15px;
+
+        font-size:20px;
+
+        cursor:pointer;
+
+        }
+
+        button:hover{
+
+        opacity:.9;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Agendar cita</h1>
+
+<form id="form">
+
+    <input
+            id="usuario"
+            type="number"
+            placeholder="ID Usuario"
+            required
+    >
+
+    <input
+            id="inicio"
+            type="datetime-local"
+            required
+    >
+
+    <input
+            id="fin"
+            type="datetime-local"
+            required
+    >
+
+    <input
+            id="notas"
+            placeholder="Notas"
+    >
+
+    <button
+            type="submit"
+    >
+
+        Guardar cita
+
+    </button>
+
+</form>
+
+<script>
+
+    const servicio =
+    new URLSearchParams(
+    window.location.search
+    ).get("id");
+
+    document
+    .getElementById("form")
+    .addEventListener(
+    "submit",
+
+    async(e)=>{
+
+    e.preventDefault();
+
+    const datos={
+
+    idUsuario:
+    Number(
+    document
+    .getElementById("usuario")
+    .value
+    ),
+
+    idServicio:
+    Number(
+    servicio
+    ),
+
+    fechaHoraInicio:
+    document
+    .getElementById("inicio")
+    .value,
+
+    fechaHoraFin:
+    document
+    .getElementById("fin")
+    .value,
+
+    notas:
+    document
+    .getElementById("notas")
+    .value
+
+    };
+
+    try{
+
+    const r=
+    await fetch(
+    "/api/citas",
+    {
+
+    method:"POST",
+
+    headers:{
+    "Content-Type":
+    "application/json"
+    },
+
+    body:
+    JSON.stringify(
+    datos
+    )
+
+    }
+
+    );
+
+    if(r.ok){
+
+    alert(
+    "Cita creada correctamente"
+    );
+
+    window.location=
+    "/servicios";
+
+    }else{
+
+    const texto=
+    await r.text();
+
+    alert(
+    "Error:\n"+texto
+    );
+
+    console.log(
+    texto
+    );
+
+    }
+
+    }catch(error){
+
+    alert(
+    "No se pudo conectar con el servidor"
+    );
+
+    console.log(
+    error
+    );
+
+    }
+
+    }
+
+    );
+
+</script>
+
+</body>
+
+</html>

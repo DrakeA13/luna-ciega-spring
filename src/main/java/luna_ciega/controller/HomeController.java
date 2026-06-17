@@ -11,4 +11,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/agendar")
+    public String agendar(){
+
+        return "agendar";
+
+    }
+
 }

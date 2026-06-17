@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Mis citas</title>
+
+    <style>
+
+        body{
+
+        background:#111;
+
+        font-family:Arial;
+
+        color:white;
+
+        padding:40px;
+
+        }
+
+        h1{
+
+        text-align:center;
+
+        }
+
+        #contenedor{
+
+        max-width:900px;
+
+        margin:auto;
+
+        }
+
+        .card{
+
+        background:#222;
+
+        padding:25px;
+
+        border-radius:20px;
+
+        margin-bottom:20px;
+
+        }
+
+        h2{
+
+        color:gold;
+
+        }
+
+        .estado{
+
+        color:#7dff7d;
+
+        font-weight:bold;
+
+        }
+
+        button{
+
+        padding:12px;
+
+        border:none;
+
+        background:red;
+
+        color:white;
+
+        border-radius:10px;
+
+        cursor:pointer;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Mis citas</h1>
+
+<div id="contenedor">
+
+</div>
+
+<script>
+
+    async function cargar(){
+
+    const r=
+    await fetch(
+    "/api/citas"
+    );
+
+    const citas=
+    await r.json();
+
+    let html="";
+
+    citas.forEach(c=>{
+
+    html+=`
+
+    <div class="card">
+
+    <h2>
+
+    ${c.servicio.nombre}
+
+    </h2>
+
+    <p>
+
+    Inicio:
+    ${c.fechaHoraInicio}
+
+    </p>
+
+    <p>
+
+    Fin:
+    ${c.fechaHoraFin}
+
+    </p>
+
+    <p>
+
+    ${c.notas}
+
+    </p>
+
+    <p class="estado">
+
+    ${c.estado}
+
+    </p>
+
+    <button
+    onclick="cancelar(${c.idCita})"
+    >
+
+    Cancelar
+
+    </button>
+
+    </div>
+
+    `;
+
+    });
+
+    document
+    .getElementById(
+    "contenedor"
+    )
+    .innerHTML=
+    html;
+
+    }
+
+    cargar();
+
+    async function cancelar(
+id
+){
+
+const ok=
+confirm(
+"¿Cancelar cita?"
+);
+
+if(
+!ok
+)
+return;
+
+await fetch(
+
+"/api/citas/"+id,
+
+{
+
+method:
+"DELETE"
+
+}
+
+);
+
+location.reload();
+
+}
+
+</script>
+
+</body>
+
+</html>
