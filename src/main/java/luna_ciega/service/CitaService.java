@@ -28,23 +28,41 @@ public class CitaService {
 
 
     public List<Cita> listar() {
+
         return repo.findAll();
+
     }
 
 
-    public Cita crearCita(CitaRequest req) {
+    public List<Cita> listarPorUsuario(
+            Long idUsuario
+    ){
+
+        return repo.findByUsuarioIdUsuario(
+                idUsuario
+        );
+
+    }
+
+
+    public Cita crearCita(
+            CitaRequest req
+    ) {
 
         Usuario usuario =
-                usuarioRepo.findById(
+                usuarioRepo
+                        .findById(
                                 req.getIdUsuario()
                         )
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Usuario no existe"
-                                ));
+                                )
+                        );
 
         Servicio servicio =
-                servicioRepo.findById(
+                servicioRepo
+                        .findById(
                                 Long.valueOf(
                                         req.getIdServicio()
                                 )
@@ -52,13 +70,19 @@ public class CitaService {
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Servicio no existe"
-                                ));
+                                )
+                        );
 
-        Cita cita = new Cita();
+        Cita cita =
+                new Cita();
 
-        cita.setUsuario(usuario);
+        cita.setUsuario(
+                usuario
+        );
 
-        cita.setServicio(servicio);
+        cita.setServicio(
+                servicio
+        );
 
         cita.setFechaHoraInicio(
                 LocalDateTime.parse(
@@ -80,8 +104,12 @@ public class CitaService {
                 "PENDIENTE"
         );
 
-        return repo.save(cita);
+        return repo.save(
+                cita
+        );
+
     }
+
 
     public void cancelar(
             Long id

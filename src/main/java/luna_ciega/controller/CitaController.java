@@ -44,4 +44,23 @@ public class CitaController {
         );
 
     }
+
+    @GetMapping(
+            "/usuario/{id}"
+    )
+
+    public List<Cita>
+    listarUsuario(
+
+            @PathVariable
+            Long id
+
+    ){
+
+        return service
+                .listarPorUsuario(
+                        id
+                );
+
+    }
 }

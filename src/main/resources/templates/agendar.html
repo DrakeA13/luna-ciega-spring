@@ -20,6 +20,7 @@
         h1{
         text-align:center;
         margin-bottom:40px;
+        color:gold;
         }
 
         form{
@@ -33,6 +34,12 @@
         flex-direction:column;
 
         gap:20px;
+
+        background:#222;
+
+        padding:40px;
+
+        border-radius:20px;
 
         }
 
@@ -81,13 +88,6 @@
 <form id="form">
 
     <input
-            id="usuario"
-            type="number"
-            placeholder="ID Usuario"
-            required
-    >
-
-    <input
             id="inicio"
             type="datetime-local"
             required
@@ -124,20 +124,38 @@
     document
     .getElementById("form")
     .addEventListener(
+
     "submit",
 
     async(e)=>{
 
     e.preventDefault();
 
+    const usuario=
+
+    JSON.parse(
+    localStorage.getItem(
+    "usuario"
+    )
+    );
+
+    if(!usuario){
+
+    alert(
+    "Inicia sesión primero"
+    );
+
+    window.location=
+    "/login";
+
+    return;
+
+    }
+
     const datos={
 
     idUsuario:
-    Number(
-    document
-    .getElementById("usuario")
-    .value
-    ),
+    usuario.idUsuario,
 
     idServicio:
     Number(
@@ -146,18 +164,21 @@
 
     fechaHoraInicio:
     document
-    .getElementById("inicio")
-    .value,
+    .getElementById(
+    "inicio"
+    ).value,
 
     fechaHoraFin:
     document
-    .getElementById("fin")
-    .value,
+    .getElementById(
+    "fin"
+    ).value,
 
     notas:
     document
-    .getElementById("notas")
-    .value
+    .getElementById(
+    "notas"
+    ).value
 
     };
 
@@ -165,7 +186,9 @@
 
     const r=
     await fetch(
+
     "/api/citas",
+
     {
 
     method:"POST",
@@ -191,7 +214,7 @@
     );
 
     window.location=
-    "/servicios";
+    "/mis-citas";
 
     }else{
 
@@ -225,6 +248,43 @@
     );
 
 </script>
+
+<a
+        href="/"
+
+        style="
+
+position:fixed;
+
+bottom:90px;
+
+right:60px;
+
+background:#D4A15B;
+
+color:white;
+
+padding:18px 35px;
+
+border-radius:18px;
+
+text-decoration:none;
+
+font-size:22px;
+
+font-weight:bold;
+
+box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+z-index:99999;
+
+"
+
+>
+
+    🏠 Inicio
+
+</a>
 
 </body>
 

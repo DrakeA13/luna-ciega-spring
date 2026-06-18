@@ -7,133 +7,205 @@
 
     <title>Luna Ciega</title>
 
-    <style>
-
-        *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        font-family:Arial;
-        }
-
-        body{
-
-        background:
-        linear-gradient(
-        rgba(0,0,0,.65),
-        rgba(0,0,0,.75)
-        ),
-
-        url("https://images.unsplash.com/photo-1622286342621-4bd786c2447c");
-
-        background-size:cover;
-
-        background-position:center;
-
-        height:100vh;
-
-        color:white;
-
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
-
-        }
-
-        .contenedor{
-
-        text-align:center;
-
-        }
-
-        h1{
-
-        font-size:70px;
-
-        margin-bottom:20px;
-
-        }
-
-        p{
-
-        font-size:20px;
-
-        margin-bottom:40px;
-
-        opacity:.9;
-
-        }
-
-        .boton{
-
-        background:#c79a57;
-
-        color:white;
-
-        padding:18px 50px;
-
-        border:none;
-
-        border-radius:12px;
-
-        font-size:18px;
-
-        cursor:pointer;
-
-        transition:.3s;
-
-        text-decoration:none;
-
-        display:inline-block;
-
-        }
-
-        .boton:hover{
-
-        transform:scale(1.05);
-
-        background:#ddb06f;
-
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 
 </head>
 
 <body>
 
-<div class="contenedor">
+<nav class="navbar">
 
-    <h1>Luna Ciega</h1>
+    <div class="logo">
 
-    <p>
-        Reserva tu cita de barbería y tatuajes
-    </p>
+        🌙 Luna Ciega
 
-    <a
-            href="/servicios"
-            class="boton"
+    </div>
+
+    <div
+            class="menu"
+
+            id="menu"
+
     >
 
-        Ver Servicios
+    </div>
 
-    </a>
+    <div class="usuario">
 
-    <br><br>
+<span id="nombreUsuario">
 
-    <a href="/mis-citas">
+Hola
 
-        <button>
+</span>
 
-            Ver mis citas
+        <button onclick="logout()">
+
+            Salir
 
         </button>
 
-    </a>
+    </div>
+
+</nav>
+
+<div class="contenedor">
+
+    <h1>
+
+        Luna Ciega
+
+    </h1>
+
+    <p class="subtitulo">
+
+        Reserva tu cita de barbería y tatuajes
+
+    </p>
+
+    <div class="botones">
+
+        <a
+                href="/servicios"
+                class="btn btn-principal"
+        >
+
+            Reservar ahora
+
+        </a>
+
+    </div>
+
 
 </div>
+
+<script>
+
+    const u=
+
+    JSON.parse(
+
+    localStorage
+    .getItem(
+    "usuario"
+    )
+
+    );
+
+    if(u){
+
+    document
+    .getElementById(
+    "nombreUsuario"
+    )
+
+    .innerHTML=
+
+    `Hola ${u.nombre}`;
+
+    let menu="";
+
+    menu+=`
+
+    <a href="/">
+
+    Inicio
+
+    </a>
+
+    `;
+
+    menu+=`
+
+    <a href="/calendario">
+
+    Calendario
+
+    </a>
+
+    `;
+
+    menu+=`
+
+    <a href="#">
+
+    Quiénes somos
+
+    </a>
+
+    `;
+
+    if(
+    u.rol==="CLIENTE"
+    ){
+
+    menu+=`
+
+    <a href="/mis-citas">
+
+    Mis citas
+
+    </a>
+
+    `;
+
+    }
+
+    if(
+    u.rol==="EMPLEADO"
+    ){
+
+    menu+=`
+
+    <a href="/empleado">
+
+    Panel empleado
+
+    </a>
+
+    `;
+
+    }
+
+    if(
+    u.rol==="ADMIN"
+    ){
+
+    menu+=`
+
+    <a href="/admin">
+
+    Administrador
+
+    </a>
+
+    `;
+
+    }
+
+    document
+    .getElementById(
+    "menu"
+    )
+    .innerHTML=
+
+    menu;
+
+    }
+
+    function logout(){
+
+    localStorage
+    .removeItem(
+    "usuario"
+    );
+
+    window.location=
+
+    "/login";
+
+    }
+
+</script>
 
 </body>
 

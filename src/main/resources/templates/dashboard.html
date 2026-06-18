@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Dashboard</title>
+
+    <style>
+
+        body{
+        background:#111;
+        color:white;
+        font-family:Arial;
+        padding:40px;
+        }
+
+        h1{
+        text-align:center;
+        font-size:50px;
+        color:#d9a55a;
+        margin-bottom:50px;
+        }
+
+        .grid{
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(
+        auto-fit,
+        minmax(250px,1fr)
+        );
+
+        gap:30px;
+
+        max-width:1100px;
+
+        margin:auto;
+
+        }
+
+        .card{
+
+        background:
+        rgba(255,255,255,.05);
+
+        padding:40px;
+
+        border-radius:25px;
+
+        text-align:center;
+
+        border:
+        1px solid
+        rgba(255,255,255,.08);
+
+        }
+
+        .numero{
+
+        font-size:60px;
+
+        color:#d9a55a;
+
+        margin-top:20px;
+
+        }
+
+        .texto{
+
+        font-size:22px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>
+
+    Mi Dashboard
+
+</h1>
+
+<div class="grid">
+
+    <div class="card">
+
+        <div class="texto">
+
+            📅 Total citas
+
+        </div>
+
+        <div
+                class="numero"
+                id="total"
+        >
+
+            0
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="texto">
+
+            ⏳ Próxima cita
+
+        </div>
+
+        <div
+                class="numero"
+                id="proxima"
+        >
+
+            —
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="texto">
+
+            ✂️ Servicios usados
+
+        </div>
+
+        <div
+                class="numero"
+                id="servicios"
+        >
+
+            0
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    async function cargar(){
+
+    const usuario=
+
+    JSON.parse(
+    localStorage
+    .getItem(
+    "usuario"
+    )
+    );
+
+    const r=
+
+    await fetch(
+
+    "/api/citas/usuario/"
+
+    +
+
+    usuario.idUsuario
+
+    );
+
+    const citas=
+
+    await r.json();
+
+    document
+    .getElementById(
+    "total"
+    )
+    .innerHTML=
+
+    citas.length;
+
+    const unicos=
+
+    new Set(
+    citas.map(
+    x=>
+    x.servicio.nombre
+    )
+    );
+
+    document
+    .getElementById(
+    "servicios"
+    )
+    .innerHTML=
+
+    unicos.size;
+
+    if(
+    citas.length
+    ){
+
+    document
+    .getElementById(
+    "proxima"
+    )
+    .innerHTML=
+
+    new Date(
+    citas[0]
+    .fechaHoraInicio
+    )
+
+    .toLocaleDateString(
+    "es-MX"
+    );
+
+    }
+
+    }
+
+    cargar();
+
+</script>
+
+<a
+        href="/"
+
+        style="
+
+position:fixed;
+
+bottom:90px;
+
+right:60px;
+
+background:#D4A15B;
+
+color:white;
+
+padding:18px 35px;
+
+border-radius:18px;
+
+text-decoration:none;
+
+font-size:22px;
+
+font-weight:bold;
+
+box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+z-index:99999;
+
+"
+
+>
+
+    🏠 Inicio
+
+</a>
+</body>
+
+</html>

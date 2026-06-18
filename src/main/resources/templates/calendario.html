@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Calendario</title>
+
+    <style>
+
+        body{
+        background:#111;
+        color:white;
+        font-family:Arial;
+        padding:40px;
+        }
+
+        h1{
+        text-align:center;
+        color:gold;
+        margin-bottom:40px;
+        }
+
+        #contenedor{
+        max-width:900px;
+        margin:auto;
+        display:grid;
+        gap:20px;
+        }
+
+        .card{
+        background:#222;
+        padding:25px;
+        border-radius:20px;
+        }
+
+        .card h2{
+        color:gold;
+        margin-bottom:10px;
+        }
+
+        .card p{
+        margin:8px 0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>
+
+    📅 Calendario de citas
+
+</h1>
+
+<div id="contenedor">
+
+</div>
+
+<script>
+
+    async function cargar(){
+
+    const usuario=
+    JSON.parse(
+    localStorage.getItem(
+    "usuario"
+    )
+    );
+
+    if(!usuario){
+
+    location="/login";
+
+    return;
+
+    }
+
+    const r=
+    await fetch(
+    "/api/citas/usuario/"
+    +
+    usuario.idUsuario
+    );
+
+    const citas=
+    await r.json();
+
+    let html="";
+
+    if(citas.length===0){
+
+    html=
+    `
+    <div class="card">
+
+    No tienes citas
+
+    </div>
+    `;
+
+    }
+
+    citas.forEach(c=>{
+
+    html+=`
+
+    <div class="card">
+
+    <h2>
+
+    ✂️
+    ${c.servicio.nombre}
+
+    </h2>
+
+    <p>
+
+    📅
+    ${c.fechaHoraInicio}
+
+    </p>
+
+    <p>
+
+    🕐
+    ${c.fechaHoraFin}
+
+    </p>
+
+    <p>
+
+    📝
+    ${c.notas}
+
+    </p>
+
+    <p>
+
+    Estado:
+    ${c.estado}
+
+    </p>
+
+    </div>
+
+    `;
+
+    });
+
+    document
+    .getElementById(
+    "contenedor"
+    )
+    .innerHTML=
+    html;
+
+    }
+
+    cargar();
+
+</script>
+
+<a
+        href="/"
+
+        style="
+
+position:fixed;
+
+bottom:90px;
+
+right:60px;
+
+background:#D4A15B;
+
+color:white;
+
+padding:18px 35px;
+
+border-radius:18px;
+
+text-decoration:none;
+
+font-size:22px;
+
+font-weight:bold;
+
+box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+z-index:99999;
+
+"
+
+>
+
+    🏠 Inicio
+
+</a>
+
+</body>
+
+</html>

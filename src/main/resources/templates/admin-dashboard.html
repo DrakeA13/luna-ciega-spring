@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Dashboard Admin</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+
+        body{
+
+        padding-top:120px;
+
+        }
+
+        .panel{
+
+        width:100%;
+
+        max-width:1400px;
+
+        margin:auto;
+
+        padding:40px;
+
+        }
+
+        .titulo{
+
+        text-align:center;
+
+        font-size:55px;
+
+        margin-bottom:50px;
+
+        }
+
+        .grid{
+
+        display:grid;
+
+        grid-template-columns:
+
+        repeat(
+        auto-fit,
+        minmax(
+        250px,
+        1fr
+        )
+        );
+
+        gap:30px;
+
+        }
+
+        .card{
+
+        background:
+
+        rgba(
+        255,
+        255,
+        255,
+        .08
+        );
+
+        backdrop-filter:blur(10px);
+
+        padding:40px;
+
+        border-radius:25px;
+
+        text-align:center;
+
+        transition:.3s;
+
+        }
+
+        .card:hover{
+
+        transform:
+
+        translateY(-8px);
+
+        }
+
+        .numero{
+
+        font-size:60px;
+
+        color:#D4A15B;
+
+        font-weight:bold;
+
+        margin-top:20px;
+
+        }
+
+        .tabla{
+
+        margin-top:60px;
+
+        background:
+
+        rgba(
+        255,
+        255,
+        255,
+        .08
+        );
+
+        padding:30px;
+
+        border-radius:25px;
+
+        }
+
+        table{
+
+        width:100%;
+
+        border-collapse:collapse;
+
+        }
+
+        th{
+
+        color:#D4A15B;
+
+        padding:20px;
+
+        }
+
+        td{
+
+        padding:20px;
+
+        border-top:
+
+        1px solid
+        rgba(
+        255,
+        255,
+        255,
+        .1
+        );
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        🌙 Luna Ciega
+
+    </div>
+
+    <div class="menu">
+
+        <a href="/">
+
+            Inicio
+
+        </a>
+
+    </div>
+
+    <div class="usuario">
+
+<span id="nombreUsuario">
+
+Admin
+
+</span>
+
+        <button onclick="logout()">
+
+            Salir
+
+        </button>
+
+    </div>
+
+</nav>
+
+<div class="panel">
+
+    <h1 class="titulo">
+
+        📊 Dashboard Administrador
+
+    </h1>
+
+    <div class="grid">
+
+        <div class="card">
+
+            👥 Usuarios
+
+            <div class="numero"
+                 id="usuarios">
+                0
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            📅 Citas
+
+            <div class="numero"
+                 id="citas">
+                0
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            ✂️ Servicios
+
+            <div class="numero"
+                 id="servicios">
+                0
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            ⏳ Pendientes
+
+            <div class="numero"
+                 id="pendientes">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="tabla">
+
+        <h2>
+
+            Últimas citas
+
+        </h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>
+
+                    Cliente
+
+                </th>
+
+                <th>
+
+                    Servicio
+
+                </th>
+
+                <th>
+
+                    Estado
+
+                </th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="tablaCitas">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+    const u=
+
+    JSON.parse(
+
+    localStorage
+    .getItem(
+    "usuario"
+    )
+
+    );
+
+    if(
+    u
+    ){
+
+    document
+    .getElementById(
+    "nombreUsuario"
+    )
+    .innerHTML=
+
+    u.nombre;
+
+    }
+
+    function logout(){
+
+    localStorage
+    .removeItem(
+    "usuario"
+    );
+
+    location=
+    "/login";
+
+    }
+
+</script>
+
+<script>
+
+    async function cargar(){
+
+    const r=
+
+    await fetch(
+    "/api/dashboard"
+    );
+
+    const d=
+
+    await r.json();
+
+    usuarios.innerHTML=
+    d.usuarios;
+
+    citas.innerHTML=
+    d.citas;
+
+    servicios.innerHTML=
+    d.servicios;
+
+    pendientes.innerHTML=
+    d.pendientes;
+
+    }
+
+
+
+    async function cargarCitas(){
+
+    const r=
+
+    await fetch(
+    "/api/dashboard/citas"
+    );
+
+    const lista=
+
+    await r.json();
+
+    let html="";
+
+    lista.forEach(c=>{
+
+    html+=`
+
+    <tr>
+
+    <td>
+
+    ${c.usuario.nombre}
+
+    </td>
+
+    <td>
+
+    ${c.servicio.nombre}
+
+    </td>
+
+    <td>
+
+    ${c.estado}
+
+    </td>
+
+    </tr>
+
+    `;
+
+    });
+
+    document
+    .getElementById(
+    "tablaCitas"
+    )
+    .innerHTML=
+
+    html;
+
+    }
+
+
+
+    cargar();
+
+    cargarCitas();
+
+</script>
+
+</body>
+
+</html>
